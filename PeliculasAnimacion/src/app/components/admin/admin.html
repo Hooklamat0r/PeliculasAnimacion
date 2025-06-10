@@ -1,0 +1,70 @@
+<div class="container py-4">
+  <h2 class="text-primary fw-bold mb-4">Panel de Películas</h2>
+
+  <!-- Formulario (crear / editar) diferenciado visualmente -->
+  <div class="p-4 mb-4 border border-success rounded bg-light">
+    <h5 class="text-success fw-semibold mb-3">{{ editando ? 'Editar Película' : 'Crear Nueva Película' }}</h5>
+
+    <div
+    *ngIf="mensajeError != ''"
+    class="alert alert-danger text-center"
+  >
+    {{mensajeError}}.
+  </div>
+    <form (ngSubmit)="guardarPelicula()" [formGroup]="peliculaForm">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <input formControlName="title" type="text" class="form-control" placeholder="Título" required>
+        </div>
+        <div class="col-md-4">
+          <input formControlName="posterURL" type="text" class="form-control" placeholder="URL del póster" required>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="imdbId" type="text" class="form-control" placeholder="IMDb ID" required>
+        </div>
+        <div class="col-md-1 d-grid">
+          <button type="submit" class="btn btn-success">{{ editando ? 'Actualizar' : 'Crear' }}</button>
+        </div>
+      </div>
+      <div class="mt-2" *ngIf="editando">
+        <button type="button" (click)="cancelarEdicion()" class="btn btn-secondary btn-sm">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabla de Películas -->
+  <div class="table-responsive">
+    <table *ngIf="!cargando; else cargandoTemplate" class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Título</th>
+          <th>Poster</th>
+          <th>IMDb</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pelicula of peliculas">
+          <td>{{ pelicula.title }}</td>
+          <td>
+            <img [src]="pelicula.posterURL" alt="Poster" class="img-thumbnail" width="80">
+          </td>
+          <td>
+            <a [href]="'https://www.imdb.com/title/' + pelicula.imdbId" target="_blank" rel="noopener noreferrer">Ver</a>
+          </td>
+          <td>
+            <button (click)="editar(pelicula)" class="btn btn-sm btn-warning me-2">Editar</button>
+            <button (click)="eliminar(pelicula.id)" class="btn btn-sm btn-danger">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #cargandoTemplate>
+  <div class="d-flex justify-content-center align-items-center min-vh-25">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</ng-template>
