@@ -75,7 +75,6 @@ export class Admin implements OnInit {
         posterURL,
         imdbId
       };
-
       
       this.moviesService.agregarPelicula(peliculaAnadir).subscribe(async () => {
         this.peliculas = await this.moviesService.cargarPeliculas();

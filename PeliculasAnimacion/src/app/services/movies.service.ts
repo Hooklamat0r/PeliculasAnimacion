@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class MoviesService {
 
   constructor(private http: HttpClient, ) { }
-
+  // https://api.sampleapis.com/movies/animation
   async cargarPeliculas(): Promise<IPelicula[]> {
     return await firstValueFrom(this.http.get<IPelicula[]>('http://localhost//DWEC/dev/APIAngular/cargar_peliculas.php'));
   }
